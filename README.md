@@ -13,42 +13,6 @@ Dr. Pooja Sarin
 ---
 <div style="page-break-after: always"></div>
 
-## CERTIFICATE 
-
-I hereby declare that the project titled “Food Delivery Order Demand Analysis using Python” is my original work carried out as a part of the academic requirements for the subject Statistics and data analysis during the academic session 2025–2026 in the Bachelor of Technology (B.Tech) in Computer Science Engineering program.
-
-This project has been prepared and completed by me with sincere effort, dedication, and interest under the guidance and support of my subject teacher. The objective of this project is to apply statistical concepts and techniques using Python programming in order to analyze and interpret a real-world dataset related to food delivery services and customer order demand patterns.
-
-While working on this project, I explored different stages of statistical analysis including data collection, data preprocessing, exploratory data analysis, visualization, and descriptive statistics. The implementation of these techniques using Python libraries such as Pandas, NumPy, Matplotlib, and Seaborn helped me gain a practical understanding of how statistical tools can be used to analyze consumer data and derive meaningful business insights.
-
-I further declare that this project report is my own work and has not been copied from any other source except for references that have been properly acknowledged. To the best of my knowledge, this project has not been submitted earlier for the award of any degree, diploma, or certificate in this or any other educational institution.
-
-This project has provided me with valuable learning experience and has helped me enhance my understanding of statistical concepts and their practical applications in the field of data analysis, consumer behavior, and computer science.
-
-I take full responsibility for the authenticity and originality of the work presented in this report.
-
----
-<div style="page-break-after: always"></div>
-
-## ACKNOWLEDGEMENT
-
-I would like to express my sincere gratitude to everyone who directly or indirectly contributed to the successful completion of this project titled “Food Delivery Order Demand Analysis using Python.”
-
-First and foremost, I would like to thank my respected Faculty for providing me with the opportunity to work on this project as part of my academic curriculum. Their continuous guidance, encouragement, and valuable suggestions helped me understand the practical applications of statistical concepts and data analysis techniques.
-
-I am also thankful to my college and the Department of Computer Science Engineering for providing the necessary academic environment and resources that supported me in completing this project successfully. The knowledge and skills that I have gained during my coursework played an important role in carrying out this work effectively.
-
-This project allowed me to explore the practical implementation of statistical methods using Python programming. While working on this project, I gained a deeper understanding of concepts such as data preprocessing, exploratory data analysis, descriptive statistics, and visualization techniques. Implementing these techniques using Python libraries helped me strengthen my analytical and problem-solving skills.
-
-I would also like to thank my classmates and friends who supported me during the preparation of this project and provided helpful suggestions whenever required.
-
-Finally, I would like to express my gratitude to all those individuals and online resources whose knowledge and references helped me complete this project successfully. Their contributions have played an important role in enhancing my understanding of statistical data analysis.
-
-This project has been a valuable learning experience for me and has helped me improve my technical knowledge as well as my understanding of statistical applications in real-world business datasets.
-
----
-<div style="page-break-after: always"></div>
-
 ## ABSTRACT
 
 Statistics plays a significant role in analyzing and interpreting data in various fields such as education, business, healthcare, and technology. With the rapid growth of data in modern times, statistical analysis combined with computational tools has become an essential part of data-driven decision making.
