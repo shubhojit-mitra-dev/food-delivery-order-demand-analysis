@@ -11,7 +11,6 @@
 Dr. Pooja Sarin
 
 ---
-<div style="page-break-after: always"></div>
 
 ## ABSTRACT
 
@@ -28,7 +27,6 @@ Descriptive statistical measures including mean, median, standard deviation, ske
 The results obtained from the analysis demonstrate how statistical methods and computational tools can be effectively used to analyze commercial consumer datasets to derive useful conclusions for business supply-chain logistics. This project highlights the importance of statistics in understanding real-world data and provides practical experience in applying statistical techniques using Python programming.
 
 ---
-<div style="page-break-after: always"></div>
 
 ## TABLE OF CONTENTS
 
@@ -49,7 +47,6 @@ The results obtained from the analysis demonstrate how statistical methods and c
 | 13 | [Appendix (Python Code)](#appendix-python-code) |
 
 ---
-<div style="page-break-after: always"></div>
 
 ## INTRODUCTION
 
@@ -317,7 +314,6 @@ Overall, this project provided valuable practical experience heavily grounded in
 5. Seaborn Visualization Framework (seaborn.pydata.org)
 
 ---
-<div style="page-break-after: always"></div>
 
 ## APPENDIX (PYTHON CODE)
 
