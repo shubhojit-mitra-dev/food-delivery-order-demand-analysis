@@ -1,17 +1,14 @@
+
+<img src="./image.png" width="full" height="full">
+
 # Statistics & Data Analysis
 **Semester - VI**  
 **(BTech CSE: 2023-27)**
 
 **Project Title:** Food Delivery Order Demand Analysis using Python
 
-**Submitted by:-**  
-Name:- [Your Name]  
-SAP I'D:- [Your SAP ID]  
-Roll no.: [Your Roll Number]  
-Batch: [Your Batch]
-
 **Submitted to:-**  
-[Teacher/Professor Name]  
+Dr. Pooja Sarin
 
 ---
 <div style="page-break-after: always"></div>
@@ -84,6 +81,7 @@ The results obtained from the analysis demonstrate how statistical methods and c
 | 9 | [Results And Discussion](#results-and-discussion) |
 | 10 | [Conclusion](#conclusion) |
 | 11 | [References](#references) |
+| 12 | [Appendix (Python Code)](#appendix-python-code) |
 
 ---
 <div style="page-break-after: always"></div>
@@ -326,3 +324,143 @@ Overall, this project provided valuable practical experience heavily grounded in
 3. NumPy Documentation (numpy.org)
 4. Matplotlib Documentation (matplotlib.org)
 5. Seaborn Visualization Framework (seaborn.pydata.org)
+
+---
+<div style="page-break-after: always"></div>
+
+## APPENDIX (PYTHON CODE)
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+print("\n===== FOOD DELIVERY DEMAND ANALYSIS STARTED =====\n")
+
+# ==============================
+# DATA COLLECTION & INSPECTION
+# ==============================
+df = pd.read_csv("Customer_data.csv")
+
+print("Dataset Shape:", df.shape)
+df.info()
+df.describe()
+print("Missing Values:\n", df.isnull().sum())
+
+# ==============================
+# DATA PREPROCESSING & CLEANING
+# ==============================
+# Drop missing values
+df = df.dropna()
+
+# Clean column names
+df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+# Encode Gender Mapping
+df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
+
+# Drop duplicates
+df = df.drop_duplicates()
+
+# Correct mapping for target columns
+df = df.rename(columns={
+    'no_of_orders_placed': 'demand', 
+    'no._of_orders_placed': 'demand',
+    'restaurnat_rating': 'restaurant_rating'
+})
+
+# Correct error row in delivery_time
+df = df[df['delivery_time'] != 'Delivery Time']
+df['delivery_time'] = df['delivery_time'].astype(int)
+
+# Categorical String to Integer Scaling
+mapping = {
+    'Strongly disagree': 1,
+    'Disagree': 2,
+    'Neutral': 3,
+    'Agree': 4,
+    'Strongly agree': 5
+}
+
+ordinal_cols = [
+    'ease_and_convenient',
+    'self_cooking',
+    'health_concern',
+    'late_delivery',
+    'poor_hygiene',
+    'bad_past_experience',
+    'more_offers_and_discount'
+]
+
+for col in ordinal_cols:
+    df[col] = df[col].map(mapping)
+    
+# One-Hot Encoding
+df = pd.get_dummies(df, drop_first=True)
+
+# Dropping unnecessary columns
+df = df.drop(columns=ordinal_cols)
+
+# Reset index
+df = df.reset_index(drop=True)
+
+# Save cleaned output
+df.to_csv("cleaned_food_delivery_data.csv", index=False)
+print("\nData Cleaned and Standardized Successfully")
+
+# ==============================
+# EXPLORATORY DATA ANALYSIS
+# ==============================
+
+# Histogram
+plt.figure()
+df['demand'].hist()
+plt.title("Distribution of Order Demand")
+plt.xlabel("Demand")
+plt.ylabel("Frequency")
+plt.show()
+
+# Scatterplot
+plt.figure()
+sns.scatterplot(x='delivery_time', y='demand', data=df)
+plt.title("Demand vs Delivery Time")
+plt.show()
+
+# Boxplots
+plt.figure()
+sns.boxplot(x='restaurant_rating', y='demand', data=df)
+plt.title("Demand by Restaurant Rating")
+plt.show()
+
+plt.figure()
+sns.boxplot(x='delivery_rating', y='demand', data=df)
+plt.title("Demand by Delivery Rating")
+plt.show()
+
+plt.figure()
+sns.boxplot(x='gender', y='demand', data=df)
+plt.title("Demand by Gender")
+plt.show()
+
+# Heatmap
+plt.figure(figsize=(12,8))
+sns.heatmap(df.corr(), cmap='coolwarm')
+plt.title("Correlation Matrix")
+plt.show()
+
+# Bar chart
+df.groupby('restaurant_rating')['demand'].mean().plot(kind='bar')
+plt.title("Average Demand by Restaurant Rating")
+plt.ylabel("Average Demand")
+plt.show()
+
+# ==============================
+# DESCRIPTIVE STATISTICS
+# ==============================
+print("Descriptive Statistics for Demand:")
+print("Mean:", df['demand'].mean())
+print("Median:", df['demand'].median())
+print("Standard Deviation:", df['demand'].std())
+print("Skewness:", df['demand'].skew())
+print("Kurtosis:", df['demand'].kurt())
+```
