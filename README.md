@@ -42,10 +42,11 @@ The results obtained from the analysis demonstrate how statistical methods and c
 | 6 | [Exploratory Data Analysis](#exploratory-data-analysis) |
 | 7 | [Data Visualization](#data-visualization) |
 | 8 | [Descriptive Statistics](#descriptive-statistics) |
-| 9 | [Results And Discussion](#results-and-discussion) |
-| 10 | [Conclusion](#conclusion) |
-| 11 | [References](#references) |
-| 12 | [Appendix (Python Code)](#appendix-python-code) |
+| 9 | [Inferential Statistics](#inferential-statistics) |
+| 10 | [Results And Discussion](#results-and-discussion) |
+| 11 | [Conclusion](#conclusion) |
+| 12 | [References](#references) |
+| 13 | [Appendix (Python Code)](#appendix-python-code) |
 
 ---
 <div style="page-break-after: always"></div>
@@ -251,6 +252,32 @@ Descriptive statistics provide important insights into the dataset and serve as 
 
 ---
 
+## INFERENTIAL STATISTICS
+
+Inferential statistics allows us to move beyond simple data description and make formal, mathematically rigorous predictions or decisions regarding the population. Hypothesis testing ensures that observed variations in the sample represent actual phenomena rather than random chance.
+
+In this project, two formal hypothesis models were employed to evaluate the behavioral consistency of food delivery demand:
+
+### Test 1: Independent Samples T-Test (Demand vs Gender)
+**Goal:** Determine if male and female cohorts exhibit fundamentally different ordering demand volumes.
+- **H₀ (Null):** There is no significant difference between the average demand of males and females.
+- **Decision:** The test evaluated significance across the gender split. If significant (p < 0.05), we can reliably state ordering behaviors alter mathematically based on gender demographics.
+- **Diagnostics:** The structural means and variances were plotted to verify the differences alongside standardized confidence intervals.
+
+![Test 1 Visualization](assets/test1_ttest_visualization.png)
+*Figure 9:- Independent Samples T-Test evaluating structural demand distributions between gender cohorts alongside mean variance error indicators.*
+
+### Test 2: One-Way ANOVA (Demand vs Restaurant Rating)
+**Goal:** Prove whether the level of a restaurant's rating (1 to 5 stars) actively shifts the total density of customer demand.
+- **H₀ (Null):** Order demand is equally distributed regardless of the specific restaurant rating given.
+- **Decision:** Using F-statistics, the algorithm tests if high-rated tiers actively process tangibly higher volume blocks. A significant p-value implies food quality ratings natively dictate delivery demand volume scaling.
+- **Post-Hoc:** If rejected, the study cascades into a Tukey HSD test to calculate precisely which tier jumps cause the most aggressive volume shifts.
+
+![Test 2 Visualization](assets/test2_anova_visualization.png)
+*Figure 10:- One-Way ANOVA illustrating interaction dependencies connecting restaurant quality buckets mathematically against total consumer demand volume.*
+
+---
+
 ## RESULTS AND DISCUSSION
 
 After performing statistical analysis and visualization on the dataset, several important observations were identified.
@@ -294,137 +321,87 @@ Overall, this project provided valuable practical experience heavily grounded in
 
 ## APPENDIX (PYTHON CODE)
 
+Below is an aggregated representation of the code execution pipeline implemented throughout the Unit notebooks.
+
 ```python
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+from scipy.stats import tukey_hsd
 
-print("\n===== FOOD DELIVERY DEMAND ANALYSIS STARTED =====\n")
+# ==========================================
+# UNIT 1: DATA PREPROCESSING & CLEANING
+# ==========================================
+df = pd.read_csv("data/Customer_data.csv")
 
-# ==============================
-# DATA COLLECTION & INSPECTION
-# ==============================
-df = pd.read_csv("data/raw/Customer_data.csv")
+# Missing & Duplicates
+df = df.dropna().drop_duplicates()
 
-print("Dataset Shape:", df.shape)
-df.info()
-df.describe()
-print("Missing Values:\n", df.isnull().sum())
-
-# ==============================
-# DATA PREPROCESSING & CLEANING
-# ==============================
-# Drop missing values
-df = df.dropna()
-
-# Clean column names
+# Standardization & Cleaning
 df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
-
-# Encode Gender Mapping
-df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
-
-# Drop duplicates
-df = df.drop_duplicates()
-
-# Correct mapping for target columns
-df = df.rename(columns={
-    'no_of_orders_placed': 'demand', 
-    'no._of_orders_placed': 'demand',
-    'restaurnat_rating': 'restaurant_rating'
-})
-
-# Correct error row in delivery_time
+df = df.rename(columns={'no_of_orders_placed': 'demand', 'restaurnat_rating': 'restaurant_rating'})
 df = df[df['delivery_time'] != 'Delivery Time']
 df['delivery_time'] = df['delivery_time'].astype(int)
 
-# Categorical String to Integer Scaling
-mapping = {
-    'Strongly disagree': 1,
-    'Disagree': 2,
-    'Neutral': 3,
-    'Agree': 4,
-    'Strongly agree': 5
-}
-
-ordinal_cols = [
-    'ease_and_convenient',
-    'self_cooking',
-    'health_concern',
-    'late_delivery',
-    'poor_hygiene',
-    'bad_past_experience',
-    'more_offers_and_discount'
-]
-
+# Scaling Ordinals & Categoricals
+df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
+mapping = {'Strongly disagree': 1, 'Disagree': 2, 'Neutral': 3, 'Agree': 4, 'Strongly agree': 5}
+ordinal_cols = ['ease_and_convenient', 'self_cooking', 'health_concern', 'late_delivery']
 for col in ordinal_cols:
     df[col] = df[col].map(mapping)
-    
-# One-Hot Encoding
+
 df = pd.get_dummies(df, drop_first=True)
 
-# Dropping unnecessary columns
-df = df.drop(columns=ordinal_cols)
+# Continuous Feat Scaling & Persisting
+scaler = StandardScaler()
+scale_cols = ['age', 'family_size', 'restaurant_rating', 'delivery_rating', 'demand', 'delivery_time', 'order_value']
+df[scale_cols] = scaler.fit_transform(df[scale_cols])
+df.to_csv("data/cleaned_food_delivery_data.csv", index=False)
 
-# Reset index
-df = df.reset_index(drop=True)
+# ==========================================
+# UNIT 2: DESCRIPTIVE STATISTICS
+# ==========================================
+df_raw = pd.read_csv("data/Customer_data.csv").dropna().drop_duplicates()
 
-# Save cleaned output
-df.to_csv("data/processed/cleaned_food_delivery_data.csv", index=False)
-print("\nData Cleaned and Standardized Successfully")
+print("Mean:", df_raw['demand'].mean())
+print("Median:", df_raw['demand'].median())
+print("Std Dev:", df_raw['demand'].std())
+print("Variance:", df_raw['demand'].var())
+print("Skewness:", df_raw['demand'].skew())
+print("Kurtosis:", df_raw['demand'].kurt())
 
-# ==============================
-# EXPLORATORY DATA ANALYSIS
-# ==============================
+# Visualizations Output Engine
+sns.histplot(df_raw['demand'], kde=True)
+plt.savefig('assets/demand_hist.png')
 
-# Histogram
-plt.figure()
-df['demand'].hist()
-plt.title("Distribution of Order Demand")
-plt.xlabel("Demand")
-plt.ylabel("Frequency")
-plt.show()
+sns.regplot(x='delivery_time', y='demand', data=df_raw)
+plt.savefig('assets/delivery_time_regplot.png')
 
-# Scatterplot
-plt.figure()
-sns.scatterplot(x='delivery_time', y='demand', data=df)
-plt.title("Demand vs Delivery Time")
-plt.show()
+# ==========================================
+# UNIT 3: INFERENTIAL STATISTICS
+# ==========================================
 
-# Boxplots
-plt.figure()
-sns.boxplot(x='restaurant_rating', y='demand', data=df)
-plt.title("Demand by Restaurant Rating")
-plt.show()
+# Test 1: Independent T-Test
+females = df_raw[df_raw['gender'] == 'Female']['demand']
+males = df_raw[df_raw['gender'] == 'Male']['demand']
+t_stat, p_val_t = stats.ttest_ind(females, males)
+print("Gender T-Test P-Value:", p_val_t)
 
-plt.figure()
-sns.boxplot(x='delivery_rating', y='demand', data=df)
-plt.title("Demand by Delivery Rating")
-plt.show()
+# Test 2: One-Way ANOVA
+rating_groups = [df_raw[df_raw['restaurant_rating'] == r]['demand'].values for r in sorted(df_raw['restaurant_rating'].unique())]
+f_stat, p_val_anova = stats.f_oneway(*rating_groups)
+print("Rating ANOVA P-Value:", p_val_anova)
 
-plt.figure()
-sns.boxplot(x='gender', y='demand', data=df)
-plt.title("Demand by Gender")
-plt.show()
-
-# Heatmap
-plt.figure(figsize=(12,8))
-sns.heatmap(df.corr(), cmap='coolwarm')
-plt.title("Correlation Matrix")
-plt.show()
-
-# Bar chart
-df.groupby('restaurant_rating')['demand'].mean().plot(kind='bar')
-plt.title("Average Demand by Restaurant Rating")
-plt.ylabel("Average Demand")
-plt.show()
-
-# ==============================
-# DESCRIPTIVE STATISTICS
-# ==============================
-print("Descriptive Statistics for Demand:")
-print("Mean:", df['demand'].mean())
-print("Median:", df['demand'].median())
-print("Standard Deviation:", df['demand'].std())
-print("Skewness:", df['demand'].skew())
-print("Kurtosis:", df['demand'].kurt())
+# If significant, we run Post Hoc
+if p_val_anova < 0.05:
+    res = tukey_hsd(*rating_groups)
+    print(res)
 ```
+
+---
+
+**GitHub Repository:**  
+[https://github.com/shubhojit-mitra-dev/food-delivery-order-demand-analysis/](https://github.com/shubhojit-mitra-dev/food-delivery-order-demand-analysis/)
