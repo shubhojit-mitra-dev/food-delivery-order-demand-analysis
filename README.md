@@ -1,5 +1,5 @@
 
-<img src="./image.png" width="full" height="full">
+<img src="./assets/logo.png" width="full" height="full">
 
 # Statistics & Data Analysis
 **Semester - VI**  
@@ -193,10 +193,10 @@ Variables dealing with occupation labels and complex dietary preferences were tr
 Duplicate identical instances within the feature space were filtered to isolate the data to 486 truly unique rows. Data preprocessing ensures that the dataset is clean, numerically stable, and highly verified for further exploration along analytical paths.
 
 ### Figure 1:- Dataset Structure
-![Figure 1](graphs/dataset_structure.png)
+![Figure 1](assets/dataset_structure.png)
 
 ### Figure 2:- Data Types
-![Figure 2](graphs/data_types.png)
+![Figure 2](assets/data_types.png)
 
 ---
 
@@ -237,27 +237,27 @@ A heatmap is a graphical representation that displays the correlation between va
 Data visualization helps simplify the interpretation of statistical findings and provides a clearer understanding of the dataset.
 
 ### Figure 3:- Demand Distribution
-![Figure 3](graphs/demand_hist.png)
+![Figure 3](assets/demand_hist.png)
 *Figure 3:- Histogram showcasing the central tendency of orders placed across standard customers. This distribution helps evaluate if the demand naturally conforms to a normal curve.*
 
 ### Figure 4:- Demand vs Delivery Time
-![Figure 4](graphs/delivery_time_regplot.png)
+![Figure 4](assets/delivery_time_regplot.png)
 *Figure 4:- Linear regression visual identifying the trend variance corresponding between rising delivery fulfillment times and their subsequent drop-off impact on overall order demand.*
 
 ### Figure 5:- Restaurant Rating Boxplot
-![Figure 5](graphs/restaurant_rating_box.png)
+![Figure 5](assets/restaurant_rating_box.png)
 *Figure 5:- Boxplot evaluating the concentration of food demand dependent upon the quality ratings of the restaurant, identifying outliers existing in the lower and upper quartile environments.*
 
 ### Figure 6:- Delivery Rating Boxplot
-![Figure 6](graphs/delivery_rating_box.png)
+![Figure 6](assets/delivery_rating_box.png)
 *Figure 6:- Boxplot highlighting that faster and highly-rated delivery experiences hold substantially narrower outlier bands and significantly stronger density near the high-demand peaks.*
 
 ### Figure 7:- Correlation Heatmap
-![Figure 7](graphs/heatmap.png)
+![Figure 7](assets/heatmap.png)
 *Figure 7:- Correlation heatmap illustrating the relationships among key continuous variables (such as wait times, age, and satisfaction metrics). It actively uncovers the directionality of collinear independent features.*
 
 ### Figure 8:- Demand by Gender
-![Figure 8](graphs/gender_boxplot.png)
+![Figure 8](assets/gender_boxplot.png)
 *Figure 8:- Categorical distribution plot assessing differences in food delivery demand densities solely driven by gender categorizations.*
 
 ---
@@ -340,7 +340,7 @@ print("\n===== FOOD DELIVERY DEMAND ANALYSIS STARTED =====\n")
 # ==============================
 # DATA COLLECTION & INSPECTION
 # ==============================
-df = pd.read_csv("Customer_data.csv")
+df = pd.read_csv("data/raw/Customer_data.csv")
 
 print("Dataset Shape:", df.shape)
 df.info()
@@ -405,7 +405,7 @@ df = df.drop(columns=ordinal_cols)
 df = df.reset_index(drop=True)
 
 # Save cleaned output
-df.to_csv("cleaned_food_delivery_data.csv", index=False)
+df.to_csv("data/processed/cleaned_food_delivery_data.csv", index=False)
 print("\nData Cleaned and Standardized Successfully")
 
 # ==============================
