@@ -1,0 +1,3 @@
+Test Type,Target Variables,P-Value,Effect Size,Decision
+Independent T-Test,Demand mapped across Gender,0.5648269071988022,Cohen's d: -0.053,Fail to Reject H₀
+One-Way ANOVA,Demand mapped across Restaurant Ratings,0.08806951977782214,Eta²: 0.017,Fail to Reject H₀
